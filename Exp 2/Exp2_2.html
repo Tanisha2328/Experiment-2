@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Product Filter</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f8;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .filter-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .filter-head h2 {
+            color: #333;
+            font-size: 24px;
+        }
+
+        .filter-head label {
+            font-size: 14px;
+            color: #555;
+            margin-right: 6px;
+        }
+
+        .filter-head select {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .filter-head select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        hr {
+            margin: 15px 0;
+            border: none;
+            height: 1px;
+            background-color: #ddd;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h2 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 6px;
+        }
+
+        .category {
+            font-size: 13px;
+            color: #666;
+            text-transform: capitalize;
+        }
+
+        @media (max-width: 600px) {
+            .filter-head {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="filter-head">
+            <h2>Product Filter</h2>
+            <div>
+                <label for="category">Filter By :</label>
+                <select id="category">
+                    <option value="all">All</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="clothing">Clothing</option>
+                </select>
+            </div>
+        </header>
+
+        <hr>
+
+        <section class="products" id="productGrid">
+            <div class="card" data-category="electronics">
+                <h2>Wireless HeadPhone</h2>
+                <p class="price">$129.99</p>
+                <p class="category">electronics</p>
+            </div>
+
+            <div class="card" data-category="clothing">
+                <h2>Cotton T-Shirt</h2>
+                <p class="price">$24.99</p>
+                <p class="category">clothing</p>
+            </div>
+
+            <div class="card" data-category="electronics">
+                <h2>Bluetooth Speaker</h2>
+                <p class="price">$89.99</p>
+                <p class="category">electronics</p>
+            </div>
+
+            <div class="card" data-category="clothing">
+                <h2>Denim Jeans</h2>
+                <p class="price">$59.99</p>
+                <p class="category">clothing</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        let filterDropdown = document.getElementById('category');
+        let products = document.querySelectorAll('.card');
+
+        filterDropdown.addEventListener("change", function () {
+            let selectedCategory = this.value;
+
+            products.forEach(card => {
+                let cardcategory = card.getAttribute("data-category");
+
+                if (selectedCategory == "all" || selectedCategory === cardcategory) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

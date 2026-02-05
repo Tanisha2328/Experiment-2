@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drawing Board</title>
+
+    <style>
+        polyline {
+            fill: none;
+            stroke: black;
+            stroke-width: 3;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Draw on the Canvas by pressing the mouse</h1>
+
+    <svg id="canvas" width="800" height="600"
+         style="border: 1px solid black;"></svg>
+
+    <br><br>
+    <button id="clear">🗑️ Clear</button>
+
+    <script>
+        const svg = document.getElementById("canvas");
+        const clearBtn = document.getElementById("clear");
+
+        let drawing = false;
+        let polyline = null;
+
+        function getMousePosition(evt) {
+            const rect = svg.getBoundingClientRect();
+            return {
+                x: evt.clientX - rect.left,
+                y: evt.clientY - rect.top
+            };
+        }
+
+        svg.addEventListener("mousedown", (e) => {
+            drawing = true;
+            const pos = getMousePosition(e);
+
+            polyline = document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "polyline"
+            );
+
+            polyline.setAttribute("points", `${pos.x},${pos.y}`);
+            svg.appendChild(polyline);
+        });
+
+        svg.addEventListener("mousemove", (e) => {
+            if (!drawing) return;
+
+            const pos = getMousePosition(e);
+            let points = polyline.getAttribute("points");
+            polyline.setAttribute(
+                "points",
+                points + ` ${pos.x},${pos.y}`
+            );
+        });
+
+        svg.addEventListener("mouseup", () => {
+            drawing = false;
+            polyline = null;
+        });
+
+        svg.addEventListener("mouseleave", () => {
+            drawing = false;
+            polyline = null;
+        });
+
+        clearBtn.addEventListener("click", () => {
+            svg.innerHTML = "";
+        });
+    </script>
+</body>
+</html>
